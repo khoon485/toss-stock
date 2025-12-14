@@ -1,0 +1,723 @@
+{
+  "analyzed_at": "2025-12-14T18:19:10.724411",
+  "market": {
+    "vix": 15.74,
+    "vix_change": 5.99,
+    "spy": 681.76,
+    "spy_change": -1.08,
+    "qqq": 613.62,
+    "qqq_change": -1.91,
+    "us10y": 4.19,
+    "dxy": 98.39,
+    "market_sentiment": "GREED",
+    "sentiment_desc": "탐욕 (안정적 상승)"
+  },
+  "holdings": [
+    {
+      "symbol": "COIN",
+      "underlying": null,
+      "current_price": 267.46,
+      "date": "2025-12-12",
+      "high_52w": 444.65,
+      "low_52w": 142.58,
+      "from_high_52w": -39.8,
+      "from_low_52w": 87.6,
+      "indicators": {
+        "MA5": 272.63,
+        "MA20": 265.02,
+        "MA60": 313.13,
+        "Tenkan": 271.73,
+        "Kijun": 277.98,
+        "RSI": 64.9,
+        "MACD": -8.697,
+        "MACD_Signal": -12.044,
+        "BB_Upper": 288.66,
+        "BB_Lower": 241.38,
+        "Volume_Ratio": 0.82,
+        "ATR_pct": 5.21
+      },
+      "signals": [
+        "✅ 가격이 20일선 위 - 상승 추세",
+        "⚠️ 가격이 구름대 아래 - 약세",
+        "📈 RSI 64.9 - 강세",
+        "📉 MACD 히스토그램 하락 중",
+        "⚡ 변동성 높음 (ATR 5.21%) - 리스크 주의",
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "recommendation": "HOLD",
+      "score": 1,
+      "buy_signals": 2,
+      "sell_signals": 1,
+      "momentum": {
+        "return_1w": -2.46,
+        "return_1m": -5.54,
+        "return_3m": -18.43,
+        "return_6m": 2.25
+      },
+      "candle_patterns": [
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "support_resistance": {
+        "resistance": 292.76,
+        "support": 231.17,
+        "pivot": 269.61,
+        "r1": 276.05,
+        "s1": 261.01,
+        "distance_to_resistance": 9.46,
+        "distance_to_support": -13.57
+      },
+      "name": "Coinbase",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 72122621952,
+        "pe_ratio": 23.096718,
+        "forward_pe": 38.204422,
+        "pb_ratio": 4.4857774,
+        "ps_ratio": 9.785403,
+        "peg_ratio": null,
+        "eps": 11.58,
+        "revenue_growth": 0.589,
+        "earnings_growth": 4.306,
+        "profit_margin": 0.43664002,
+        "roe": 0.26005,
+        "roa": 0.00873,
+        "debt_to_equity": 48.559,
+        "current_ratio": 2.404,
+        "dividend_yield": null,
+        "beta": 3.691,
+        "52w_high": 444.65,
+        "52w_low": 142.58,
+        "avg_volume": 9730250,
+        "short_ratio": 1.58,
+        "target_price": 379.475,
+        "recommendation": "buy",
+        "sector": "Financial Services",
+        "industry": "Financial Data & Stock Exchanges"
+      },
+      "strategy": {
+        "action": "HOLD",
+        "confidence": "MEDIUM",
+        "entry_strategy": [
+          "추가 매수 조건: $231.17 지지 확인 시",
+          "또는: RSI 30 이하 과매도 시"
+        ],
+        "exit_strategy": [
+          "매도 조건: $292.76 저항 돌파 실패 시",
+          "또는: RSI 70 이상 + 거래량 감소 시"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "현재 유지",
+        "reasoning": [
+          "명확한 방향성 없음 - 관망"
+        ]
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "underlying": null,
+      "current_price": 458.96,
+      "date": "2025-12-12",
+      "high_52w": 488.54,
+      "low_52w": 214.25,
+      "from_high_52w": -6.1,
+      "from_low_52w": 114.2,
+      "indicators": {
+        "MA5": 448.41,
+        "MA20": 427.82,
+        "MA60": 435.92,
+        "Tenkan": 442.57,
+        "Kijun": 425.12,
+        "RSI": 80.9,
+        "MACD": 6.72,
+        "MACD_Signal": 3.275,
+        "BB_Upper": 471.16,
+        "BB_Lower": 384.49,
+        "Volume_Ratio": 0.98,
+        "ATR_pct": 3.15
+      },
+      "signals": [
+        "✅ 가격이 20일선 위 - 상승 추세",
+        "✅ 가격이 구름대 위 - 강세",
+        "🔴 RSI 80.9 - 과매수 구간 (매도 고려)",
+        "📈 MACD 히스토그램 상승 중",
+        "🚀 1개월 수익률 +14.17% - 강한 상승",
+        "📈 상승 장악형 (Bullish Engulfing) - 매수 신호"
+      ],
+      "recommendation": "HOLD",
+      "score": 0,
+      "buy_signals": 2,
+      "sell_signals": 2,
+      "momentum": {
+        "return_1w": 4.41,
+        "return_1m": 14.17,
+        "return_3m": 8.86,
+        "return_6m": 39.45
+      },
+      "candle_patterns": [
+        "📈 상승 장악형 (Bullish Engulfing) - 매수 신호"
+      ],
+      "support_resistance": {
+        "resistance": 463.01,
+        "support": 382.78,
+        "pivot": 454.55,
+        "r1": 467.42,
+        "s1": 446.08,
+        "distance_to_resistance": 0.88,
+        "distance_to_support": -16.6
+      },
+      "name": "Tesla",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 1526417981440,
+        "pe_ratio": 312.21768,
+        "forward_pe": 203.25502,
+        "pb_ratio": 19.077229,
+        "ps_ratio": 15.9612055,
+        "peg_ratio": null,
+        "eps": 1.47,
+        "revenue_growth": 0.116,
+        "earnings_growth": -0.371,
+        "profit_margin": 0.05314,
+        "roe": 0.06791,
+        "roa": 0.0235,
+        "debt_to_equity": 17.082,
+        "current_ratio": 2.066,
+        "dividend_yield": null,
+        "beta": 1.878,
+        "52w_high": 488.54,
+        "52w_low": 214.25,
+        "avg_volume": 86311657,
+        "short_ratio": 0.93,
+        "target_price": 391.351,
+        "recommendation": "hold",
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers"
+      },
+      "strategy": {
+        "action": "HOLD",
+        "confidence": "MEDIUM",
+        "entry_strategy": [
+          "추가 매수 조건: $382.78 지지 확인 시",
+          "또는: RSI 30 이하 과매도 시"
+        ],
+        "exit_strategy": [
+          "매도 조건: $463.01 저항 돌파 실패 시",
+          "또는: RSI 70 이상 + 거래량 감소 시"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "현재 유지",
+        "reasoning": [
+          "명확한 방향성 없음 - 관망"
+        ]
+      }
+    },
+    {
+      "symbol": "AMD",
+      "underlying": null,
+      "current_price": 210.78,
+      "date": "2025-12-12",
+      "high_52w": 267.08,
+      "low_52w": 76.48,
+      "from_high_52w": -21.1,
+      "from_low_52w": 175.6,
+      "indicators": {
+        "MA5": 219.27,
+        "MA20": 219.34,
+        "MA60": 218.71,
+        "Tenkan": 217.52,
+        "Kijun": 228.9,
+        "RSI": 56.0,
+        "MACD": -3.241,
+        "MACD_Signal": -3.066,
+        "BB_Upper": 240.4,
+        "BB_Lower": 198.29,
+        "Volume_Ratio": 0.88,
+        "ATR_pct": 4.32
+      },
+      "signals": [
+        "⚠️ 가격이 20일선 아래 - 하락 추세",
+        "➖ 가격이 구름대 안 - 횡보/불확실",
+        "➖ RSI 56.0 - 중립",
+        "📉 MACD 데드크로스 - 매도 신호",
+        "📉 MACD 히스토그램 하락 중",
+        "💥 1개월 수익률 -14.99% - 급락",
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "recommendation": "SELL",
+      "score": -3,
+      "buy_signals": 0,
+      "sell_signals": 3,
+      "momentum": {
+        "return_1w": -4.67,
+        "return_1m": -14.99,
+        "return_3m": 31.36,
+        "return_6m": 66.77
+      },
+      "candle_patterns": [
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "support_resistance": {
+        "resistance": 253.44,
+        "support": 194.28,
+        "pivot": 214.11,
+        "r1": 219.16,
+        "s1": 205.73,
+        "distance_to_resistance": 20.24,
+        "distance_to_support": -7.83
+      },
+      "name": "AMD",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 343158620160,
+        "pe_ratio": 109.78125,
+        "forward_pe": 32.74232,
+        "pb_ratio": 5.6448846,
+        "ps_ratio": 10.714666,
+        "peg_ratio": null,
+        "eps": 1.92,
+        "revenue_growth": 0.356,
+        "earnings_growth": 0.603,
+        "profit_margin": 0.10323,
+        "roe": 0.05317,
+        "roa": 0.025980001,
+        "debt_to_equity": 6.366,
+        "current_ratio": 2.308,
+        "dividend_yield": null,
+        "beta": 1.927,
+        "52w_high": 267.08,
+        "52w_low": 76.48,
+        "avg_volume": 56941025,
+        "short_ratio": 0.69,
+        "target_price": 283.56512,
+        "recommendation": "buy",
+        "sector": "Technology",
+        "industry": "Semiconductors"
+      },
+      "strategy": {
+        "action": "SELL",
+        "confidence": "MEDIUM",
+        "entry_strategy": [],
+        "exit_strategy": [
+          "즉시 매도: 포지션의 50% 현재가 $210.78에서",
+          "잔여 매도: 반등 시 $217.10 (+3%)에서 나머지"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "0%",
+        "reasoning": [
+          "매도 신호 발생 - 포지션 축소 권장"
+        ]
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "underlying": null,
+      "current_price": 226.19,
+      "date": "2025-12-12",
+      "high_52w": 258.6,
+      "low_52w": 161.38,
+      "from_high_52w": -12.5,
+      "from_low_52w": 40.2,
+      "indicators": {
+        "MA5": 228.61,
+        "MA20": 228.57,
+        "MA60": 228.01,
+        "Tenkan": 232.04,
+        "Kijun": 233.46,
+        "RSI": 58.2,
+        "MACD": -0.742,
+        "MACD_Signal": -0.425,
+        "BB_Upper": 238.28,
+        "BB_Lower": 218.85,
+        "Volume_Ratio": 0.66,
+        "ATR_pct": 2.01
+      },
+      "signals": [
+        "⚠️ 가격이 20일선 아래 - 하락 추세",
+        "⚠️ 가격이 구름대 아래 - 약세",
+        "➖ RSI 58.2 - 중립",
+        "📉 MACD 히스토그램 하락 중"
+      ],
+      "recommendation": "SELL",
+      "score": -2,
+      "buy_signals": 0,
+      "sell_signals": 2,
+      "momentum": {
+        "return_1w": -0.31,
+        "return_1m": -4.79,
+        "return_3m": -3.36,
+        "return_6m": 4.67
+      },
+      "candle_patterns": [],
+      "support_resistance": {
+        "resistance": 238.97,
+        "support": 215.18,
+        "pivot": 227.13,
+        "r1": 229.14,
+        "s1": 224.18,
+        "distance_to_resistance": 5.65,
+        "distance_to_support": -4.87
+      },
+      "name": "Amazon",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 2418019926016,
+        "pe_ratio": 31.94774,
+        "forward_pe": 28.793766,
+        "pb_ratio": 6.53974,
+        "ps_ratio": 3.4976346,
+        "peg_ratio": null,
+        "eps": 7.08,
+        "revenue_growth": 0.134,
+        "earnings_growth": 0.364,
+        "profit_margin": 0.11063,
+        "roe": 0.24327,
+        "roa": 0.07495,
+        "debt_to_equity": 43.405,
+        "current_ratio": 1.009,
+        "dividend_yield": null,
+        "beta": 1.372,
+        "52w_high": 258.6,
+        "52w_low": 161.38,
+        "avg_volume": 48144204,
+        "short_ratio": 1.33,
+        "target_price": 295.53116,
+        "recommendation": "strong_buy",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail"
+      },
+      "strategy": {
+        "action": "SELL",
+        "confidence": "MEDIUM",
+        "entry_strategy": [],
+        "exit_strategy": [
+          "즉시 매도: 포지션의 50% 현재가 $226.19에서",
+          "잔여 매도: 반등 시 $232.98 (+3%)에서 나머지"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "0%",
+        "reasoning": [
+          "매도 신호 발생 - 포지션 축소 권장"
+        ]
+      }
+    },
+    {
+      "symbol": "GOOGL",
+      "underlying": null,
+      "current_price": 309.29,
+      "date": "2025-12-12",
+      "high_52w": 328.62,
+      "low_52w": 140.14,
+      "from_high_52w": -5.9,
+      "from_low_52w": 120.7,
+      "indicators": {
+        "MA5": 314.55,
+        "MA20": 308.44,
+        "MA60": 275.82,
+        "Tenkan": 314.25,
+        "Kijun": 299.57,
+        "RSI": 57.2,
+        "MACD": 9.878,
+        "MACD_Signal": 11.938,
+        "BB_Upper": 338.07,
+        "BB_Lower": 278.8,
+        "Volume_Ratio": 0.58,
+        "ATR_pct": 2.88
+      },
+      "signals": [
+        "✅ 가격이 20일선 위 - 상승 추세",
+        "✅ 가격이 구름대 위 - 강세",
+        "➖ RSI 57.2 - 중립",
+        "📉 MACD 히스토그램 하락 중",
+        "🚀 1개월 수익률 +11.1% - 강한 상승"
+      ],
+      "recommendation": "BUY",
+      "score": 2,
+      "buy_signals": 2,
+      "sell_signals": 0,
+      "momentum": {
+        "return_1w": -1.41,
+        "return_1m": 11.1,
+        "return_3m": 23.23,
+        "return_6m": 75.24
+      },
+      "candle_patterns": [],
+      "support_resistance": {
+        "resistance": 328.62,
+        "support": 270.52,
+        "pivot": 309.9,
+        "r1": 314.24,
+        "s1": 304.95,
+        "distance_to_resistance": 6.25,
+        "distance_to_support": -12.53
+      },
+      "name": "Google (Alphabet)",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 3746158346240,
+        "pe_ratio": 30.501972,
+        "forward_pe": 27.665644,
+        "pb_ratio": 9.655355,
+        "ps_ratio": 9.7182665,
+        "peg_ratio": null,
+        "eps": 10.14,
+        "revenue_growth": 0.159,
+        "earnings_growth": 0.353,
+        "profit_margin": 0.32233003,
+        "roe": 0.3545,
+        "roa": 0.16275999,
+        "debt_to_equity": 11.424,
+        "current_ratio": 1.747,
+        "dividend_yield": 0.27,
+        "beta": 1.07,
+        "52w_high": 328.83,
+        "52w_low": 140.53,
+        "avg_volume": 36841180,
+        "short_ratio": 1.75,
+        "target_price": 328.3585,
+        "recommendation": "strong_buy",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information"
+      },
+      "strategy": {
+        "action": "BUY",
+        "confidence": "MEDIUM",
+        "entry_strategy": [
+          "1차 매수: 현재가 $309.29에서 포지션의 40%",
+          "2차 매수: $293.83 (-5%)에서 30%",
+          "3차 매수: $278.36 (-10%)에서 30%"
+        ],
+        "exit_strategy": [],
+        "stop_loss": {
+          "price": 262.4,
+          "percentage": -15.2,
+          "desc": "지지선 $270.52 하회 시 손절"
+        },
+        "take_profit": [
+          {
+            "price": 328.62,
+            "percentage": 6.2,
+            "sell_ratio": "50%",
+            "desc": "저항선 도달 시 절반 익절"
+          },
+          {
+            "price": 345.05,
+            "percentage": 11.6,
+            "sell_ratio": "50%",
+            "desc": "저항선 돌파 시 나머지 익절"
+          }
+        ],
+        "position_size": "20%",
+        "reasoning": [
+          "매수 신호 - 보수적 분할매수 권장"
+        ]
+      }
+    },
+    {
+      "symbol": "META",
+      "underlying": null,
+      "current_price": 644.23,
+      "date": "2025-12-12",
+      "high_52w": 795.71,
+      "low_52w": 479.11,
+      "from_high_52w": -19.0,
+      "from_low_52w": 34.5,
+      "indicators": {
+        "MA5": 654.17,
+        "MA20": 632.35,
+        "MA60": 680.79,
+        "Tenkan": 674.27,
+        "Kijun": 646.12,
+        "RSI": 66.9,
+        "MACD": -0.479,
+        "MACD_Signal": -5.318,
+        "BB_Upper": 686.46,
+        "BB_Lower": 578.24,
+        "Volume_Ratio": 0.57,
+        "ATR_pct": 3.04
+      },
+      "signals": [
+        "✅ 가격이 20일선 위 - 상승 추세",
+        "⚠️ 가격이 구름대 아래 - 약세",
+        "📈 RSI 66.9 - 강세",
+        "📉 MACD 히스토그램 하락 중",
+        "✳️ 도지 (Doji) - 추세 전환 가능"
+      ],
+      "recommendation": "HOLD",
+      "score": 1,
+      "buy_signals": 2,
+      "sell_signals": 1,
+      "momentum": {
+        "return_1w": -3.38,
+        "return_1m": 5.63,
+        "return_3m": -17.24,
+        "return_6m": -8.18
+      },
+      "candle_patterns": [
+        "✳️ 도지 (Doji) - 추세 전환 가능"
+      ],
+      "support_resistance": {
+        "resistance": 711.0,
+        "support": 581.25,
+        "pivot": 664.61,
+        "r1": 690.62,
+        "s1": 618.23,
+        "distance_to_resistance": 10.36,
+        "distance_to_support": -9.78
+      },
+      "name": "Meta (Facebook)",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 1623799496704,
+        "pe_ratio": 28.493143,
+        "forward_pe": 21.388508,
+        "pb_ratio": 8.368796,
+        "ps_ratio": 8.570762,
+        "peg_ratio": null,
+        "eps": 22.61,
+        "revenue_growth": 0.262,
+        "earnings_growth": -0.826,
+        "profit_margin": 0.30892,
+        "roe": 0.32643002,
+        "roa": 0.18013,
+        "debt_to_equity": 26.311,
+        "current_ratio": 1.978,
+        "dividend_yield": 0.33,
+        "beta": 1.273,
+        "52w_high": 796.25,
+        "52w_low": 479.8,
+        "avg_volume": 17692801,
+        "short_ratio": 1.24,
+        "target_price": 837.9152,
+        "recommendation": "strong_buy",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information"
+      },
+      "strategy": {
+        "action": "HOLD",
+        "confidence": "MEDIUM",
+        "entry_strategy": [
+          "추가 매수 조건: $581.25 지지 확인 시",
+          "또는: RSI 30 이하 과매도 시"
+        ],
+        "exit_strategy": [
+          "매도 조건: $711.00 저항 돌파 실패 시",
+          "또는: RSI 70 이상 + 거래량 감소 시"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "현재 유지",
+        "reasoning": [
+          "명확한 방향성 없음 - 관망"
+        ]
+      }
+    },
+    {
+      "symbol": "NVDA",
+      "underlying": null,
+      "current_price": 175.02,
+      "date": "2025-12-12",
+      "high_52w": 212.18,
+      "low_52w": 86.6,
+      "from_high_52w": -17.5,
+      "from_low_52w": 102.1,
+      "indicators": {
+        "MA5": 182.05,
+        "MA20": 181.93,
+        "MA60": 185.97,
+        "Tenkan": 181.31,
+        "Kijun": 184.73,
+        "RSI": 45.0,
+        "MACD": -1.942,
+        "MACD_Signal": -1.783,
+        "BB_Upper": 189.23,
+        "BB_Lower": 174.64,
+        "Volume_Ratio": 0.75,
+        "ATR_pct": 3.27
+      },
+      "signals": [
+        "⚠️ 가격이 20일선 아래 - 하락 추세",
+        "⚠️ 가격이 구름대 아래 - 약세",
+        "➖ RSI 45.0 - 중립",
+        "📉 MACD 데드크로스 - 매도 신호",
+        "📉 MACD 히스토그램 하락 중",
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "recommendation": "SELL",
+      "score": -4,
+      "buy_signals": 0,
+      "sell_signals": 4,
+      "momentum": {
+        "return_1w": -5.68,
+        "return_1m": -6.33,
+        "return_3m": 0.09,
+        "return_6m": 20.98
+      },
+      "candle_patterns": [
+        "📉 하락 장악형 (Bearish Engulfing) - 매도 신호"
+      ],
+      "support_resistance": {
+        "resistance": 195.99,
+        "support": 169.54,
+        "pivot": 177.49,
+        "r1": 180.35,
+        "s1": 172.15,
+        "distance_to_resistance": 11.98,
+        "distance_to_support": -3.13
+      },
+      "name": "NVIDIA",
+      "quantity": 0,
+      "is_leveraged": false,
+      "fundamentals": {
+        "market_cap": 4261212061696,
+        "pe_ratio": 43.321785,
+        "forward_pe": 23.538843,
+        "pb_ratio": 35.77678,
+        "ps_ratio": 22.76994,
+        "peg_ratio": null,
+        "eps": 4.04,
+        "revenue_growth": 0.625,
+        "earnings_growth": 0.667,
+        "profit_margin": 0.53007,
+        "roe": 1.07359,
+        "roa": 0.53528,
+        "debt_to_equity": 9.102,
+        "current_ratio": 4.468,
+        "dividend_yield": 0.02,
+        "beta": 2.284,
+        "52w_high": 212.19,
+        "52w_low": 86.62,
+        "avg_volume": 191063125,
+        "short_ratio": 1.05,
+        "target_price": 250.92929,
+        "recommendation": "strong_buy",
+        "sector": "Technology",
+        "industry": "Semiconductors"
+      },
+      "strategy": {
+        "action": "SELL",
+        "confidence": "MEDIUM",
+        "entry_strategy": [],
+        "exit_strategy": [
+          "즉시 매도: 포지션의 50% 현재가 $175.02에서",
+          "잔여 매도: 반등 시 $180.27 (+3%)에서 나머지"
+        ],
+        "stop_loss": null,
+        "take_profit": [],
+        "position_size": "0%",
+        "reasoning": [
+          "매도 신호 발생 - 포지션 축소 권장"
+        ]
+      }
+    }
+  ]
+}

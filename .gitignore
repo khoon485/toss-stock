@@ -1,0 +1,24 @@
+# 가상환경
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# 캐시
+.cache/
+
+# IDE
+.vscode/
+.idea/
+
+# 로그
+logs/
+
+# 스크린샷 (선택적)
+# screenshots/
+
+# 민감 데이터
+*.env
+credentials.json

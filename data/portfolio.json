@@ -1,0 +1,15 @@
+{
+  "updated_at": "2025-12-14T17:50:00",
+  "account_type": "overseas",
+  "currency": "USD",
+  "holdings": [
+    {"symbol": "COIN", "name": "Coinbase", "quantity": 0},
+    {"symbol": "TSLA", "name": "Tesla", "quantity": 0},
+    {"symbol": "AMD", "name": "AMD", "quantity": 0},
+    {"symbol": "AMZN", "name": "Amazon", "quantity": 0},
+    {"symbol": "GOOGL", "name": "Google (Alphabet)", "quantity": 0},
+    {"symbol": "META", "name": "Meta (Facebook)", "quantity": 0},
+    {"symbol": "NVDA", "name": "NVIDIA", "quantity": 0}
+  ],
+  "notes": "분석 요청 종목"
+}
