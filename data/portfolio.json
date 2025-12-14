@@ -1,15 +1,29 @@
 {
   "updated_at": "2025-12-14T17:50:00",
-  "account_type": "overseas",
-  "currency": "USD",
-  "holdings": [
-    {"symbol": "COIN", "name": "Coinbase", "quantity": 0},
-    {"symbol": "TSLA", "name": "Tesla", "quantity": 0},
-    {"symbol": "AMD", "name": "AMD", "quantity": 0},
-    {"symbol": "AMZN", "name": "Amazon", "quantity": 0},
-    {"symbol": "GOOGL", "name": "Google (Alphabet)", "quantity": 0},
-    {"symbol": "META", "name": "Meta (Facebook)", "quantity": 0},
-    {"symbol": "NVDA", "name": "NVIDIA", "quantity": 0}
-  ],
-  "notes": "분석 요청 종목"
+  "holdings": {
+    "us": [
+      {"symbol": "COIN", "name": "Coinbase", "quantity": 0},
+      {"symbol": "TSLA", "name": "Tesla", "quantity": 0},
+      {"symbol": "AMD", "name": "AMD", "quantity": 0},
+      {"symbol": "AMZN", "name": "Amazon", "quantity": 0},
+      {"symbol": "GOOGL", "name": "Google (Alphabet)", "quantity": 4},
+      {"symbol": "META", "name": "Meta (Facebook)", "quantity": 0},
+      {"symbol": "NVDA", "name": "NVIDIA", "quantity": 0},
+      {"symbol": "CONL", "name": "Coinbase 2x Long", "quantity": 100}
+    ],
+    "kr": [
+      {"symbol": "005930.KS", "name": "삼성전자", "quantity": 0},
+      {"symbol": "035420.KS", "name": "NAVER", "quantity": 0},
+      {"symbol": "000660.KS", "name": "SK하이닉스", "quantity": 0},
+      {"symbol": "042700.KQ", "name": "한미반도체", "quantity": 0},
+      {"symbol": "005380.KS", "name": "현대차", "quantity": 0},
+      {"symbol": "000270.KS", "name": "기아", "quantity": 0}
+    ],
+    "crypto": [
+      {"symbol": "BTC-USD", "name": "비트코인", "quantity": 0},
+      {"symbol": "ETH-USD", "name": "이더리움", "quantity": 1.00617191, "avg_price": 4200},
+      {"symbol": "SOL-USD", "name": "솔라나", "quantity": 3.33007674, "avg_price": 225}
+    ]
+  },
+  "notes": "분석 요청 종목 (미국 + 한국 + 코인)"
 }

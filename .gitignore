@@ -16,8 +16,13 @@ __pycache__/
 # 로그
 logs/
 
-# 스크린샷 (선택적)
-# screenshots/
+# 스크린샷 (폴더는 유지, 내용물 제외)
+screenshots/*
+!screenshots/.gitkeep
+
+# 리포트 (폴더는 유지, 내용물 제외)
+data/reports/*
+!data/reports/.gitkeep
 
 # 민감 데이터
 *.env

@@ -5,8 +5,7 @@
 - 매수/매도 자동화 (추후)
 """
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -25,12 +24,11 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 def get_driver():
     """Chrome 드라이버 반환 (이미 열린 브라우저에 붙기)"""
-    options = Options()
-    # 이미 열려있는 Chrome에 연결하려면 디버그 모드로 Chrome 실행 필요
-    # chrome.exe --remote-debugging-port=9222
-    options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+    options = uc.ChromeOptions()
+    options.add_argument("--remote-debugging-port=9222")
+    options.debugger_address = "127.0.0.1:9222"
 
-    driver = webdriver.Chrome(options=options)
+    driver = uc.Chrome(options=options)
     return driver
 
 def take_screenshot(driver, name=None):

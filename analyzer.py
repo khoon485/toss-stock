@@ -540,8 +540,25 @@ def analyze_signals(df, symbol, underlying=None):
         "recommendation": "HOLD"
     }
 
-    buy_signals = 0
-    sell_signals = 0
+    score = 0  # 통합 점수 (양수=매수, 음수=매도)
+    volume_multiplier = 1.0  # 거래량에 따른 신호 강도 배수
+    signal_flags = {}  # 복합 조건 체크용
+
+    # === 거래량 멀티플라이어 먼저 계산 ===
+    if pd.notna(latest['Volume_Ratio']):
+        vol_ratio = round(latest['Volume_Ratio'], 2)
+        signals["indicators"]["Volume_Ratio"] = vol_ratio
+
+        if vol_ratio >= 2.0:
+            signals["signals"].append(f"📊 거래량 급증 ({vol_ratio}배) - 신호 강도 1.3배")
+            volume_multiplier = 1.3
+            signal_flags["volume_surge"] = True
+        elif vol_ratio >= 1.5:
+            signals["signals"].append(f"📊 거래량 증가 ({vol_ratio}배)")
+            volume_multiplier = 1.15
+        elif vol_ratio <= 0.5:
+            signals["signals"].append(f"📊 거래량 감소 ({vol_ratio}배) - 신호 약화")
+            volume_multiplier = 0.7
 
     # 1. 이평선 분석
     if pd.notna(latest['MA5']) and pd.notna(latest['MA20']):
@@ -550,34 +567,38 @@ def analyze_signals(df, symbol, underlying=None):
         if pd.notna(latest.get('MA60')):
             signals["indicators"]["MA60"] = round(latest['MA60'], 2)
 
-        # 골든크로스 / 데드크로스
+        # 골든크로스 / 데드크로스 (강한 신호)
         if prev['MA5'] <= prev['MA20'] and latest['MA5'] > latest['MA20']:
-            signals["signals"].append("📈 골든크로스 (MA5 > MA20) - 매수 신호")
-            buy_signals += 2
+            signals["signals"].append("📈 골든크로스 (MA5 > MA20) - 강한 매수 신호")
+            score += 2 * volume_multiplier
+            signal_flags["golden_cross"] = True
         elif prev['MA5'] >= prev['MA20'] and latest['MA5'] < latest['MA20']:
-            signals["signals"].append("📉 데드크로스 (MA5 < MA20) - 매도 신호")
-            sell_signals += 2
+            signals["signals"].append("📉 데드크로스 (MA5 < MA20) - 강한 매도 신호")
+            score -= 2 * volume_multiplier
+            signal_flags["death_cross"] = True
 
-        # 가격 vs 이평선
+        # 가격 vs 이평선 (확인 신호)
         if latest['Close'] > latest['MA20']:
             signals["signals"].append("✅ 가격이 20일선 위 - 상승 추세")
-            buy_signals += 1
+            score += 0.5
+            signal_flags["above_ma20"] = True
         else:
             signals["signals"].append("⚠️ 가격이 20일선 아래 - 하락 추세")
-            sell_signals += 1
+            score -= 0.5
+            signal_flags["below_ma20"] = True
 
     # 2. 일목균형표 분석
     if pd.notna(latest['Tenkan']) and pd.notna(latest['Kijun']):
         signals["indicators"]["Tenkan"] = round(latest['Tenkan'], 2)
         signals["indicators"]["Kijun"] = round(latest['Kijun'], 2)
 
-        # 전환선 vs 기준선
+        # 전환선 vs 기준선 크로스
         if prev['Tenkan'] <= prev['Kijun'] and latest['Tenkan'] > latest['Kijun']:
             signals["signals"].append("📈 일목 골든크로스 (전환선 > 기준선) - 매수 신호")
-            buy_signals += 2
+            score += 1.5 * volume_multiplier
         elif prev['Tenkan'] >= prev['Kijun'] and latest['Tenkan'] < latest['Kijun']:
             signals["signals"].append("📉 일목 데드크로스 (전환선 < 기준선) - 매도 신호")
-            sell_signals += 2
+            score -= 1.5 * volume_multiplier
 
         # 구름대 분석
         if pd.notna(latest['SpanA']) and pd.notna(latest['SpanB']):
@@ -586,30 +607,43 @@ def analyze_signals(df, symbol, underlying=None):
 
             if latest['Close'] > cloud_top:
                 signals["signals"].append("✅ 가격이 구름대 위 - 강세")
-                buy_signals += 1
+                score += 0.5
+                signal_flags["above_cloud"] = True
             elif latest['Close'] < cloud_bottom:
                 signals["signals"].append("⚠️ 가격이 구름대 아래 - 약세")
-                sell_signals += 1
+                score -= 0.5
+                signal_flags["below_cloud"] = True
             else:
                 signals["signals"].append("➖ 가격이 구름대 안 - 횡보/불확실")
 
-    # 3. RSI 분석
+    # 3. RSI 분석 - 극단값은 단독 트리거!
+    rsi_override = None  # RSI 극단값 시 다른 신호 무시용
     if pd.notna(latest['RSI']):
         rsi = round(latest['RSI'], 1)
         signals["indicators"]["RSI"] = rsi
 
-        if rsi >= 70:
+        if rsi >= 80:
+            signals["signals"].append(f"🔴🔴 RSI {rsi} - 극단적 과매수 ⚠️ 단독 SELL 트리거")
+            rsi_override = "SELL"
+            signal_flags["rsi_extreme_overbought"] = True
+        elif rsi >= 70:
             signals["signals"].append(f"🔴 RSI {rsi} - 과매수 구간 (매도 고려)")
-            sell_signals += 2
+            score -= 2
+            signal_flags["rsi_overbought"] = True
+        elif rsi <= 20:
+            signals["signals"].append(f"🟢🟢 RSI {rsi} - 극단적 과매도 (강한 매수 신호 +5점, 단 낙폭 주의)")
+            score += 5  # 강제 BUY 대신 높은 점수만
+            signal_flags["rsi_extreme_oversold"] = True
         elif rsi <= 30:
             signals["signals"].append(f"🟢 RSI {rsi} - 과매도 구간 (매수 고려)")
-            buy_signals += 2
+            score += 2
+            signal_flags["rsi_oversold"] = True
         elif rsi >= 60:
             signals["signals"].append(f"📈 RSI {rsi} - 강세")
-            buy_signals += 1
+            score += 0.5
         elif rsi <= 40:
             signals["signals"].append(f"📉 RSI {rsi} - 약세")
-            sell_signals += 1
+            score -= 0.5
         else:
             signals["signals"].append(f"➖ RSI {rsi} - 중립")
 
@@ -621,12 +655,20 @@ def analyze_signals(df, symbol, underlying=None):
         # MACD 크로스
         if prev['MACD'] <= prev['MACD_Signal'] and latest['MACD'] > latest['MACD_Signal']:
             signals["signals"].append("📈 MACD 골든크로스 - 매수 신호")
-            buy_signals += 2
+            score += 1.5 * volume_multiplier
+            signal_flags["macd_golden"] = True
         elif prev['MACD'] >= prev['MACD_Signal'] and latest['MACD'] < latest['MACD_Signal']:
             signals["signals"].append("📉 MACD 데드크로스 - 매도 신호")
-            sell_signals += 2
+            score -= 1.5 * volume_multiplier
+            signal_flags["macd_death"] = True
 
-        # MACD 히스토그램 방향
+        # MACD 양수/음수
+        if latest['MACD'] > 0:
+            signal_flags["macd_positive"] = True
+        else:
+            signal_flags["macd_negative"] = True
+
+        # MACD 히스토그램 방향 (참고용)
         if pd.notna(latest['MACD_Hist']) and pd.notna(prev['MACD_Hist']):
             if latest['MACD_Hist'] > prev['MACD_Hist']:
                 signals["signals"].append("📈 MACD 히스토그램 상승 중")
@@ -640,74 +682,153 @@ def analyze_signals(df, symbol, underlying=None):
 
         if latest['Close'] >= latest['BB_Upper']:
             signals["signals"].append("🔴 볼린저 상단 돌파 - 과매수/조정 가능")
-            sell_signals += 1
+            score -= 1
+            signal_flags["bb_upper"] = True
         elif latest['Close'] <= latest['BB_Lower']:
             signals["signals"].append("🟢 볼린저 하단 이탈 - 과매도/반등 가능")
-            buy_signals += 1
+            score += 1
+            signal_flags["bb_lower"] = True
 
-    # 6. 거래량 분석
-    if pd.notna(latest['Volume_Ratio']):
-        vol_ratio = round(latest['Volume_Ratio'], 2)
-        signals["indicators"]["Volume_Ratio"] = vol_ratio
-
-        if vol_ratio >= 2.0:
-            signals["signals"].append(f"📊 거래량 급증 ({vol_ratio}배) - 주목")
-        elif vol_ratio >= 1.5:
-            signals["signals"].append(f"📊 거래량 증가 ({vol_ratio}배)")
-
-    # 7. 52주 고점/저점 분석
+    # 6. 52주 고점/저점 분석
     if signals["from_high_52w"] >= -5:
-        signals["signals"].append(f"🔝 52주 고점 근처 ({signals['from_high_52w']}%)")
+        signals["signals"].append(f"🔝 52주 고점 근처 ({signals['from_high_52w']}%) - 추격매수 주의")
+        score -= 1
+        signal_flags["near_high"] = True
     elif signals["from_low_52w"] <= 10:
-        signals["signals"].append(f"🔻 52주 저점 근처 ({signals['from_low_52w']}%)")
+        signals["signals"].append(f"🔻 52주 저점 근처 ({signals['from_low_52w']}%) - 반등 기대")
+        score += 0.5
+        signal_flags["near_low"] = True
 
-    # 8. 최종 추천
-    score = buy_signals - sell_signals
-    if score >= 5:
-        signals["recommendation"] = "STRONG_BUY"
-    elif score >= 2:
-        signals["recommendation"] = "BUY"
-    elif score <= -5:
-        signals["recommendation"] = "STRONG_SELL"
-    elif score <= -2:
-        signals["recommendation"] = "SELL"
-    else:
-        signals["recommendation"] = "HOLD"
+    # 7. 지지/저항선 근접 체크
+    sr = calculate_support_resistance(df)
+    signals["support_resistance"] = sr
+    if sr:
+        dist_to_support = sr.get("distance_to_support", -100)
+        dist_to_resistance = sr.get("distance_to_resistance", 100)
+        if dist_to_support >= -3:  # 지지선 근처 (3% 이내)
+            signal_flags["near_support"] = True
+        if dist_to_resistance <= 3:  # 저항선 근처 (3% 이내)
+            signal_flags["near_resistance"] = True
 
-    signals["score"] = score
-    signals["buy_signals"] = buy_signals
-    signals["sell_signals"] = sell_signals
-
-    # 9. 모멘텀 (수익률) 추가
+    # 8. 모멘텀 (수익률)
     momentum = calculate_momentum(df)
     signals["momentum"] = momentum
 
     if momentum:
-        if momentum.get("return_1m", 0) > 10:
-            signals["signals"].append(f"🚀 1개월 수익률 +{momentum['return_1m']}% - 강한 상승")
-        elif momentum.get("return_1m", 0) < -10:
-            signals["signals"].append(f"💥 1개월 수익률 {momentum['return_1m']}% - 급락")
+        return_1m = momentum.get("return_1m", 0)
+        if return_1m > 20:
+            signals["signals"].append(f"🚀 1개월 +{return_1m}% 급등 - 과열 주의")
+            score -= 1
+        elif return_1m > 10:
+            signals["signals"].append(f"🚀 1개월 +{return_1m}% - 강한 상승")
+        elif return_1m < -15:
+            signals["signals"].append(f"💥 1개월 {return_1m}% 급락 - 낙폭과대")
+            score -= 2
+        elif return_1m < -10:
+            signals["signals"].append(f"💥 1개월 {return_1m}% - 하락세")
+            score -= 1
 
-    # 10. ATR (변동성)
+    # 9. ATR (변동성)
     if pd.notna(latest.get('ATR_pct')):
         atr_pct = round(latest['ATR_pct'], 2)
         signals["indicators"]["ATR_pct"] = atr_pct
         if atr_pct > 5:
             signals["signals"].append(f"⚡ 변동성 높음 (ATR {atr_pct}%) - 리스크 주의")
 
-    # 11. 캔들 패턴
+    # 10. 캔들 패턴
     candle_patterns = detect_candle_patterns(df)
     signals["candle_patterns"] = candle_patterns
     for pattern in candle_patterns:
         signals["signals"].append(pattern)
         if "매수" in pattern or "반등" in pattern:
-            buy_signals += 1
+            score += 1
+            signal_flags["bullish_candle"] = True
         elif "매도" in pattern or "하락" in pattern:
-            sell_signals += 1
+            score -= 1
+            signal_flags["bearish_candle"] = True
 
-    # 12. 지지/저항선
-    sr = calculate_support_resistance(df)
-    signals["support_resistance"] = sr
+    # === 복합 조건 보너스 ===
+    combo_bonus = 0
+
+    # 바닥 신호 콤보: RSI 과매도 + 지지선 근처 + 거래량 증가
+    if (signal_flags.get("rsi_oversold") and
+        signal_flags.get("near_support") and
+        signal_flags.get("volume_surge")):
+        signals["signals"].append("🎯 바닥 신호 콤보! (RSI 과매도 + 지지선 + 거래량) +2점")
+        combo_bonus += 2
+
+    # 천장 신호 콤보: RSI 과매수 + 저항선 근처
+    if (signal_flags.get("rsi_overbought") and
+        signal_flags.get("near_resistance")):
+        signals["signals"].append("🎯 천장 신호 콤보! (RSI 과매수 + 저항선) -2점")
+        combo_bonus -= 2
+
+    # 추세 확인 콤보: 골든크로스 + 구름대 위 + MACD 양수
+    if (signal_flags.get("golden_cross") and
+        signal_flags.get("above_cloud") and
+        signal_flags.get("macd_positive")):
+        signals["signals"].append("🎯 추세 확인 콤보! (골든크로스 + 구름대 위 + MACD+) +1.5점")
+        combo_bonus += 1.5
+
+    # 하락 확인 콤보: 데드크로스 + 구름대 아래 + MACD 음수
+    if (signal_flags.get("death_cross") and
+        signal_flags.get("below_cloud") and
+        signal_flags.get("macd_negative")):
+        signals["signals"].append("🎯 하락 확인 콤보! (데드크로스 + 구름대 아래 + MACD-) -1.5점")
+        combo_bonus -= 1.5
+
+    score += combo_bonus
+
+    # === 확신도 필터 (70% 룰) ===
+    buy_signals = sum(1 for s in signals["signals"] if "📈" in s or "🟢" in s or "✅" in s)
+    sell_signals = sum(1 for s in signals["signals"] if "📉" in s or "🔴" in s or "⚠️" in s)
+    total_signals = buy_signals + sell_signals
+
+    signals["buy_signals"] = buy_signals
+    signals["sell_signals"] = sell_signals
+
+    confidence = "LOW"
+    if total_signals >= 3:
+        if buy_signals / total_signals >= 0.7:
+            confidence = "HIGH"
+        elif sell_signals / total_signals >= 0.7:
+            confidence = "HIGH"
+        elif buy_signals / total_signals >= 0.5 or sell_signals / total_signals >= 0.5:
+            confidence = "MEDIUM"
+
+    signals["confidence"] = confidence
+
+    # === 최종 추천 결정 ===
+    score = round(score, 1)
+
+    # RSI 80+ 극단적 과매수는 강제 SELL (떨어지는 칼날 RSI 20-는 점수만 반영)
+    if rsi_override == "SELL":
+        signals["recommendation"] = "SELL"
+        signals["signals"].append("⚠️ RSI 80+ 단독 트리거로 SELL 결정 (다른 신호 무시)")
+    else:
+        # 매수/매도 신호 비율도 고려 (신호가 한쪽으로 몰려있으면 신뢰)
+        buy_ratio = buy_signals / total_signals if total_signals > 0 else 0
+        sell_ratio = sell_signals / total_signals if total_signals > 0 else 0
+
+        # 점수 기반 + 신호 비율 보정
+        if score >= 4 or (score >= 2 and buy_ratio >= 0.8):
+            signals["recommendation"] = "STRONG_BUY"
+        elif score >= 1.5 and buy_ratio >= 0.7:
+            # 점수 1.5 이상 + 매수신호 70% 이상이면 BUY
+            signals["recommendation"] = "BUY"
+        elif score >= 2:
+            signals["recommendation"] = "BUY"
+        elif score <= -4 or (score <= -2 and sell_ratio >= 0.8):
+            signals["recommendation"] = "STRONG_SELL"
+        elif score <= -1.5 and sell_ratio >= 0.7:
+            signals["recommendation"] = "SELL"
+        elif score <= -2:
+            signals["recommendation"] = "SELL"
+        else:
+            signals["recommendation"] = "HOLD"
+
+    signals["score"] = score
+    signals["combo_bonus"] = combo_bonus
 
     return signals
 
@@ -739,15 +860,34 @@ def analyze_portfolio():
         "holdings": []
     }
 
-    for holding in portfolio.get("holdings", []):
+    # 새 구조 (us/kr 분리) 또는 기존 구조 지원
+    holdings_data = portfolio.get("holdings", [])
+
+    if isinstance(holdings_data, dict):
+        # 새 구조: {"us": [...], "kr": [...]}
+        all_holdings = []
+        for market_type, holdings_list in holdings_data.items():
+            for h in holdings_list:
+                h["market"] = market_type  # us 또는 kr
+                all_holdings.append(h)
+    else:
+        # 기존 구조: [...]
+        all_holdings = holdings_data
+        for h in all_holdings:
+            h["market"] = "us"
+
+    for holding in all_holdings:
         symbol = holding["symbol"]
+        market = holding.get("market", "us")
         underlying = get_underlying(symbol)
         is_leveraged = underlying != symbol
 
+        market_label = "🇺🇸" if market == "us" else "🇰🇷"
+
         if is_leveraged:
-            print(f"[{symbol}] → 원본 [{underlying}] 분석 중...")
+            print(f"{market_label} [{symbol}] → 원본 [{underlying}] 분석 중...")
         else:
-            print(f"[{symbol}] 분석 중...")
+            print(f"{market_label} [{symbol}] 분석 중...")
 
         # 원본 종목 데이터로 분석
         df = get_stock_data(underlying, period="1y")
@@ -755,6 +895,7 @@ def analyze_portfolio():
         analysis["name"] = holding.get("name", "")
         analysis["quantity"] = holding.get("quantity", 0)
         analysis["is_leveraged"] = is_leveraged
+        analysis["market"] = market
 
         if is_leveraged:
             # 레버리지 ETF 자체 가격도 추가
@@ -782,16 +923,20 @@ def analyze_portfolio():
 
 
 def save_report(results):
-    """분석 결과 저장"""
-    os.makedirs(DATA_DIR, exist_ok=True)
+    """분석 결과 저장 (년/월/일 폴더 구조)"""
+    now = datetime.now()
+    report_dir = os.path.join(DATA_DIR, "reports", str(now.year), f"{now.month:02d}", f"{now.day:02d}")
+    os.makedirs(report_dir, exist_ok=True)
+
+    timestamp = now.strftime("%H%M%S")
 
     # JSON 저장
-    json_path = os.path.join(DATA_DIR, "analysis_report.json")
+    json_path = os.path.join(report_dir, f"report_{timestamp}.json")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
     # 텍스트 리포트 저장
-    txt_path = os.path.join(DATA_DIR, "analysis_report.txt")
+    txt_path = os.path.join(report_dir, f"report_{timestamp}.txt")
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(f"{'='*60}\n")
         f.write(f"       포트폴리오 분석 리포트\n")
@@ -827,15 +972,25 @@ def save_report(results):
                 f.write(f"종목: {h.get('name', '')} ({h['symbol']})\n")
 
             # 가격 정보
+            market = h.get("market", "us")
+            currency = "₩" if market == "kr" else "$"
+
             if h.get("leveraged_price"):
-                f.write(f"현재가: ${h.get('leveraged_price')} (레버리지)\n")
-                f.write(f"원본가: ${h.get('current_price', 'N/A')} ({h.get('underlying')})\n")
+                f.write(f"현재가: {currency}{h.get('leveraged_price'):,.0f} (레버리지)\n")
+                f.write(f"원본가: {currency}{h.get('current_price', 0):,.0f} ({h.get('underlying')})\n")
             else:
-                f.write(f"현재가: ${h.get('current_price', 'N/A')}\n")
+                price = h.get('current_price', 0)
+                if market == "kr":
+                    f.write(f"현재가: {currency}{price:,.0f}\n")
+                else:
+                    f.write(f"현재가: {currency}{price:,.2f}\n")
 
             # 52주 정보
             if h.get("high_52w"):
-                f.write(f"52주: ${h.get('low_52w')} ~ ${h.get('high_52w')}\n")
+                if market == "kr":
+                    f.write(f"52주: {currency}{h.get('low_52w'):,.0f} ~ {currency}{h.get('high_52w'):,.0f}\n")
+                else:
+                    f.write(f"52주: {currency}{h.get('low_52w'):,.2f} ~ {currency}{h.get('high_52w'):,.2f}\n")
                 f.write(f"  └─ 고점 대비: {h.get('from_high_52w')}%\n")
 
             # 추천
@@ -872,8 +1027,12 @@ def save_report(results):
             sr = h.get("support_resistance", {})
             if sr:
                 f.write(f"\n지지/저항:\n")
-                f.write(f"  저항선: ${sr.get('resistance')} ({sr.get('distance_to_resistance'):+.1f}%)\n")
-                f.write(f"  지지선: ${sr.get('support')} ({sr.get('distance_to_support'):+.1f}%)\n")
+                if market == "kr":
+                    f.write(f"  저항선: {currency}{sr.get('resistance'):,.0f} ({sr.get('distance_to_resistance'):+.1f}%)\n")
+                    f.write(f"  지지선: {currency}{sr.get('support'):,.0f} ({sr.get('distance_to_support'):+.1f}%)\n")
+                else:
+                    f.write(f"  저항선: {currency}{sr.get('resistance'):,.2f} ({sr.get('distance_to_resistance'):+.1f}%)\n")
+                    f.write(f"  지지선: {currency}{sr.get('support'):,.2f} ({sr.get('distance_to_support'):+.1f}%)\n")
 
             # 펀더멘털
             fund = h.get("fundamentals", {})
@@ -927,14 +1086,20 @@ def save_report(results):
                 # 손절선
                 sl = strategy.get("stop_loss")
                 if sl:
-                    f.write(f"\n🛑 손절선: ${sl['price']} ({sl['percentage']}%)\n")
+                    if market == "kr":
+                        f.write(f"\n🛑 손절선: {currency}{sl['price']:,.0f} ({sl['percentage']}%)\n")
+                    else:
+                        f.write(f"\n🛑 손절선: {currency}{sl['price']:,.2f} ({sl['percentage']}%)\n")
                     f.write(f"  {sl['desc']}\n")
 
                 # 익절 목표
                 if strategy.get("take_profit"):
                     f.write(f"\n🎯 익절 목표:\n")
                     for tp in strategy["take_profit"]:
-                        f.write(f"  ${tp['price']} (+{tp['percentage']}%) → {tp['sell_ratio']} 매도\n")
+                        if market == "kr":
+                            f.write(f"  {currency}{tp['price']:,.0f} (+{tp['percentage']}%) → {tp['sell_ratio']} 매도\n")
+                        else:
+                            f.write(f"  {currency}{tp['price']:,.2f} (+{tp['percentage']}%) → {tp['sell_ratio']} 매도\n")
                         f.write(f"    {tp['desc']}\n")
 
             f.write(f"\n")
