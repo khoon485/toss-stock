@@ -1,18 +1,18 @@
 {
-  "updated_at": "2025-12-14T17:50:00",
+  "updated_at": "2025-12-15T23:30:00",
   "holdings": {
     "us": [
       {"symbol": "COIN", "name": "Coinbase", "quantity": 0},
       {"symbol": "TSLA", "name": "Tesla", "quantity": 0},
       {"symbol": "AMD", "name": "AMD", "quantity": 0},
-      {"symbol": "AMZN", "name": "Amazon", "quantity": 0},
-      {"symbol": "GOOGL", "name": "Google (Alphabet)", "quantity": 4},
+      {"symbol": "AMZN", "name": "Amazon", "quantity": 5, "avg_price": 227.52},
+      {"symbol": "GOOGL", "name": "Google (Alphabet)", "quantity": 4, "avg_price": 311.57},
       {"symbol": "META", "name": "Meta (Facebook)", "quantity": 0},
       {"symbol": "NVDA", "name": "NVIDIA", "quantity": 0},
-      {"symbol": "CONL", "name": "Coinbase 2x Long", "quantity": 100}
+      {"symbol": "CONL", "name": "Coinbase 2x Long", "quantity": 100, "avg_price": 35.96}
     ],
     "kr": [
-      {"symbol": "005930.KS", "name": "삼성전자", "quantity": 0},
+      {"symbol": "005930.KS", "name": "삼성전자", "quantity": 4, "avg_price": 105600},
       {"symbol": "035420.KS", "name": "NAVER", "quantity": 0},
       {"symbol": "000660.KS", "name": "SK하이닉스", "quantity": 0},
       {"symbol": "042700.KQ", "name": "한미반도체", "quantity": 0},
@@ -24,6 +24,10 @@
       {"symbol": "ETH-USD", "name": "이더리움", "quantity": 1.00617191, "avg_price": 4200},
       {"symbol": "SOL-USD", "name": "솔라나", "quantity": 3.33007674, "avg_price": 225}
     ]
+  },
+  "cash": {
+    "usd": 1337,
+    "krw": 755941
   },
   "notes": "분석 요청 종목 (미국 + 한국 + 코인)"
 }
