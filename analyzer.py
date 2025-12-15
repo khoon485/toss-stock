@@ -332,13 +332,13 @@ def analyze_signals(df, symbol, underlying=None):
         buy_ratio = buy_signals / total_signals if total_signals > 0 else 0
         sell_ratio = sell_signals / total_signals if total_signals > 0 else 0
 
-        if score >= 4 or (score >= 2 and buy_ratio >= 0.8):
+        if score >= 5 or (score >= 4 and buy_ratio >= 0.8):
             signals["recommendation"] = "STRONG_BUY"
-        elif score >= 2 or (score >= 1.5 and buy_ratio >= 0.7):
+        elif score >= 4 or (score >= 3 and buy_ratio >= 0.7):
             signals["recommendation"] = "BUY"
-        elif score <= -4 or (score <= -2 and sell_ratio >= 0.8):
+        elif score <= -5 or (score <= -3 and sell_ratio >= 0.8):
             signals["recommendation"] = "STRONG_SELL"
-        elif score <= -2 or (score <= -1.5 and sell_ratio >= 0.7):
+        elif score <= -3 or (score <= -2 and sell_ratio >= 0.7):
             signals["recommendation"] = "SELL"
         else:
             signals["recommendation"] = "HOLD"
